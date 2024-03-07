@@ -1,4 +1,5 @@
 import Question from "./Question";
+
 import useAxios from "./getData";
 
 function Quiz({ type: { no, catagory, difficulty, type } }) {
@@ -14,9 +15,9 @@ function Quiz({ type: { no, catagory, difficulty, type } }) {
 
   return (
     <div>
-      {questions.results.map((question, i) => (
-        <Question key={i} question={question} />
-      ))}
+      {questions.results.map((question, i) => {
+        return <Question key={i} i={i + 1} question={question} />;
+      })}
     </div>
   );
 }

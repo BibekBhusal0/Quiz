@@ -7,7 +7,7 @@ export const valuesContext = createContext();
 
 function App() {
   const [values, setValues] = useState({
-    no: 10,
+    no: 20,
     catagory: undefined,
     difficulty: undefined,
     type: undefined,
@@ -16,7 +16,8 @@ function App() {
   return (
     <valuesContext.Provider value={{ values, setValues }}>
       <div className="App w-10/12 pt-3 mx-auto">
-        {values.playing ? <Quiz type={values} /> : <Home />}
+        {/* {values.playing ? <Quiz type={values} /> : <Home />} */}
+        <Quiz type={values} />
       </div>
     </valuesContext.Provider>
   );

@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { enabledContext } from "./Question";
 
 function Option({ option, correct_answer }) {
   const [color, setColor] = useState("bg-purple-400");
+  const { enabled, disable } = useContext(enabledContext);
   const checkAnswer = () => {
-    if (option === correct_answer) {
-      setColor("bg-green-400");
-    } else {
-      setColor("bg-red-400");
+    if (enabled) {
+      if (option === correct_answer) {
+        setColor("bg-green-400");
+      } else {
+        setColor("bg-red-400");
+      }
+      disable();
     }
   };
 

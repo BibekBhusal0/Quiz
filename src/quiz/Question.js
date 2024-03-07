@@ -1,19 +1,21 @@
-import React from "react";
+import React, { createContext, useState } from "react";
 import { decode } from "html-entities";
 import Option from "./option";
 
+export const enabledContext = createContext();
+
 function Question({
+  i,
   question: { correct_answer, incorrect_answers, question },
 }) {
   const insertRandom = (arr, itm) => {
     const index = Math.floor(Math.random() * (arr.length + 1));
-    if (index < arr.length) {
-      const temp = arr[index];
-      arr[index] = itm;
-      arr.push(temp);
-    } else {
-      arr.push(itm);
-    }
+    arr.splice(index, 0, itm);
+  };
+
+  const [enabled, setEnabled] = useState(true);
+  const disable = () => {
+    setEnabled(false);
   };
 
   correct_answer = decode(correct_answer);
@@ -22,17 +24,21 @@ function Question({
 
   return (
     <div>
-      <div className="text-3xl">{decode(question)}</div>
+      <div className="text-3xl">
+        {i}: {decode(question)}
+      </div>
       <div className="grid grid-cols-2 text-xl px-3 py-1">
-        {all_options.map((ans, index) => {
-          return (
-            <Option
-              key={index}
-              correct_answer={correct_answer}
-              option={decode(ans)}
-            />
-          );
-        })}
+        <enabledContext.Provider value={{ enabled, disable }}>
+          {all_options.map((ans, index) => {
+            return (
+              <Option
+                key={index}
+                correct_answer={correct_answer}
+                option={decode(ans)}
+              />
+            );
+          })}
+        </enabledContext.Provider>
       </div>
     </div>
   );
