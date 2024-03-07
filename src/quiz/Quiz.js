@@ -6,6 +6,10 @@ export const scoreContext = createContext();
 
 function Quiz({ type: { no, catagory, difficulty, type } }) {
   const base_url = "https://opentdb.com/api.php?";
+  // use useRef hook here and add logic to add
+  // score , count all question answered and all
+  // question answered wrong and when all answered
+  // are answered display a message
   const [score, setScore] = useState(0);
   const url = `${base_url}amount=${no ? no : 10}${
     catagory ? `&catagoty=${catagory}` : ""
