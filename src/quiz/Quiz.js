@@ -14,11 +14,9 @@ function Quiz({ type: { no, catagory, difficulty, type } }) {
 
   return (
     <div>
-      {/* {questionsFormatted(questions.results)} */}
       {questions.results.map((question, i) => (
         <Question key={i} question={question} />
       ))}
-      {/* <Display obj={questions.results} /> */}
     </div>
   );
 }

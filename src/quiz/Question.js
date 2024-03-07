@@ -1,5 +1,6 @@
 import React from "react";
 import { decode } from "html-entities";
+import Option from "./option";
 
 function Question({
   question: { correct_answer, incorrect_answers, question },
@@ -15,6 +16,7 @@ function Question({
     }
   };
 
+  correct_answer = decode(correct_answer);
   const all_options = [...incorrect_answers];
   insertRandom(all_options, correct_answer);
 
@@ -24,13 +26,11 @@ function Question({
       <div className="grid grid-cols-2 text-xl px-3 py-1">
         {all_options.map((ans, index) => {
           return (
-            <div
+            <Option
               key={index}
-              className={`px-4 py-2 ${
-                ans === correct_answer ? "bg-green-400" : "bg-purple-300"
-              } m-3`}>
-              {decode(ans)}
-            </div>
+              correct_answer={correct_answer}
+              option={decode(ans)}
+            />
           );
         })}
       </div>
