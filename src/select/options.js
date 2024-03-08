@@ -2,8 +2,8 @@ import React from "react";
 
 function Options({ opt, label, onChange }) {
   return (
-    <div>
-      <label className=" capitalize" htmlFor={label}>
+    <div className="text-lg col-span-4 sm:col-span-2 xl:col-span-1">
+      <label className=" capitalize pr-4" htmlFor={label}>
         {label}
       </label>
       <select onChange={onChange} name={label}>
