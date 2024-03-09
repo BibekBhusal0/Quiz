@@ -4,7 +4,10 @@ import Options from "./options";
 import { valuesContext } from "../App";
 
 function Home() {
-  const { values, setValues } = useContext(valuesContext);
+  const {
+    values: { no, firstGame, total_questions, score },
+    setValues,
+  } = useContext(valuesContext);
   const catagories = useAxios("https://opentdb.com/api_category.php");
 
   const noEntertainment = (arr) => {
@@ -35,7 +38,16 @@ function Home() {
 
   return (
     <div>
-      <h1 className="text-4xl sm:text-5xl pt-4 text-center">Take a Quiz </h1>
+      {firstGame ? (
+        ""
+      ) : (
+        <h1 className="text-4xl sm:text-5xl pt-4 text-center font-semibold">
+          Your score was {score}/{total_questions}
+        </h1>
+      )}
+      <h1 className="text-4xl sm:text-5xl pt-4 text-center">
+        {firstGame ? "Take a Quiz" : "Try Again"}
+      </h1>
       <h1 className="text-3xl sm-text-4xl pt-3 text-center px-4">
         Select the catagory, difficulty and type you like
       </h1>
@@ -46,7 +58,7 @@ function Home() {
           </label>
           <input
             onChange={handleChange}
-            value={values.no}
+            value={no}
             autoFocus
             type="Number"
             name="no"

@@ -3,11 +3,24 @@ import { enabledContext } from "./Question";
 import { valuesContext } from "../App";
 
 function Option({ option, correct_answer }) {
-  const [color, setColor] = useState("bg-purple-400");
+  const [color, setColor] = useState("bg-purple-300");
   const { enabled, disable } = useContext(enabledContext);
-  const { increaseSocre } = useContext(valuesContext);
+  const {
+    increaseSocre,
+    values: { firstGame, no, total_questions, playing, answered },
+    setTotalQuestions,
+    setValues,
+    increaseAnswered,
+  } = useContext(valuesContext);
   const checkAnswer = () => {
     if (enabled) {
+      increaseAnswered();
+      if (firstGame === true) {
+        setValues((prev) => ({ ...prev, firstGame: false }));
+      }
+      if (no !== total_questions) {
+        setTotalQuestions();
+      }
       if (option === correct_answer) {
         setColor("bg-green-400");
         increaseSocre();
@@ -19,12 +32,12 @@ function Option({ option, correct_answer }) {
   };
 
   return (
-    <div>
-      <div
-        onClick={checkAnswer}
-        className={`px-4 cursor-pointer py-2 ${color} m-3`}>
-        {option}
-      </div>
+    <div
+      onClick={checkAnswer}
+      className={`px-2 md:px-5 col-span-2 md:col-span-1 text-2xl transition-colors ease-in duration-50 ${
+        enabled ? "hover:bg-purple-500" : ""
+      } cursor-pointer py-2 ${color} m-3`}>
+      {option}
     </div>
   );
 }

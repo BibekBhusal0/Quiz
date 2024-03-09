@@ -41,7 +41,7 @@ function Quiz() {
 
   return (
     <div className=" px-2 sm:px-5">
-      <div>Score : {score} </div>
+      <div className="text-2xl py-3 font-bold">Score : {score} </div>
       {data.results.map((question, i) => {
         return <Question key={i} i={i + 1} question={question} />;
       })}

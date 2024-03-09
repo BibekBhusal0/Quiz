@@ -28,15 +28,13 @@ function Options({ all_options, correct_answer }) {
     <>
       {all_options.map((ans, index) => {
         return (
-          <>
-            <enabledContext.Provider value={{ enabled, disable }}>
-              <Option
-                key={index}
-                correct_answer={correct_answer}
-                option={decode(ans)}
-              />
-            </enabledContext.Provider>
-          </>
+          <enabledContext.Provider value={{ enabled, disable }}>
+            <Option
+              key={index}
+              correct_answer={correct_answer}
+              option={decode(ans)}
+            />
+          </enabledContext.Provider>
         );
       })}
     </>
