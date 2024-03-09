@@ -5,14 +5,7 @@ import Option from "./option";
 export const enabledContext = createContext();
 
 function Question({ i, question: { correct_answer, all_answers, question } }) {
-  // const insertRandom = (arr, itm) => {
-  //   const index = Math.floor(Math.random() * (arr.length + 1));
-  //   arr.splice(index, 0, itm);
-  // };
-
   correct_answer = decode(correct_answer);
-  // const all_options = [...incorrect_answers];
-  // insertRandom(all_options, correct_answer);
 
   return (
     <>

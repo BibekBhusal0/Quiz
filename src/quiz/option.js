@@ -1,16 +1,16 @@
 import React, { useContext, useState } from "react";
 import { enabledContext } from "./Question";
-import { scoreContext } from "./Quiz";
+import { valuesContext } from "../App";
 
 function Option({ option, correct_answer }) {
-  const { setScore, score } = useContext(scoreContext);
   const [color, setColor] = useState("bg-purple-400");
   const { enabled, disable } = useContext(enabledContext);
+  const { increaseSocre } = useContext(valuesContext);
   const checkAnswer = () => {
     if (enabled) {
       if (option === correct_answer) {
         setColor("bg-green-400");
-        setScore(score + 1);
+        increaseSocre();
       } else {
         setColor("bg-red-400");
       }
