@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import "./App.css";
 import Quiz from "./quiz/Quiz";
 import Home from "./select";
+import Footer from "./footer";
 
 export const valuesContext = createContext();
 
@@ -36,21 +37,25 @@ function App() {
   const resetScore = () => {
     setValues((prev) => ({ ...prev, score: 0 }));
   };
+  const resetAnswered = () => {
+    setValues((prev) => ({ ...prev, answered: 0 }));
+  };
   return (
-    <valuesContext.Provider
-      value={{
-        values,
-        setValues,
-        increaseSocre,
-        setTotalQuestions,
-        resetScore,
-        increaseAnswered,
-      }}>
-      <div className="App w-full p-4  sm:p-0 sm:w-10/12 pt-3 mx-auto bg-orange-100">
+    <div className="App w-full p-4  sm:p-0 sm:w-10/12 pt-3 mx-auto bg-orange-100">
+      <valuesContext.Provider
+        value={{
+          values,
+          setValues,
+          increaseSocre,
+          setTotalQuestions,
+          resetScore,
+          increaseAnswered,
+          resetAnswered,
+        }}>
         {values.playing ? <Quiz /> : <Home />}
-        {/* <Quiz /> */}
-      </div>
-    </valuesContext.Provider>
+      </valuesContext.Provider>
+      <Footer />
+    </div>
   );
 }
 

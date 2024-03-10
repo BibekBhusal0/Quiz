@@ -7,6 +7,8 @@ function Home() {
   const {
     values: { no, firstGame, total_questions, score },
     setValues,
+    resetScore,
+    resetAnswered,
   } = useContext(valuesContext);
   const catagories = useAxios("https://opentdb.com/api_category.php");
 
@@ -30,6 +32,8 @@ function Home() {
   ];
   const startGame = () => {
     setValues((prev) => ({ ...prev, playing: true }));
+    resetScore();
+    resetAnswered();
   };
 
   const handleChange = (e) => {
@@ -50,6 +54,9 @@ function Home() {
       </h1>
       <h1 className="text-3xl sm-text-4xl pt-3 text-center px-4">
         Select the catagory, difficulty and type you like
+      </h1>
+      <h1 className="text-xl sm-text-4xl pt-3 text-center px-4">
+        Note: Value of question can only be between 1 to 50.
       </h1>
       <div className=" grid grid-cols-4 gap-3 pt-5 px-2 sm:px-6 sm:pt-10 ">
         <div className=" col-span-4 sm:col-span-2 xl:col-span-1 ">

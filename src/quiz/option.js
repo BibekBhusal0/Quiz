@@ -7,7 +7,7 @@ function Option({ option, correct_answer }) {
   const { enabled, disable } = useContext(enabledContext);
   const {
     increaseSocre,
-    values: { firstGame, no, total_questions, playing, answered },
+    values: { firstGame, no, total_questions },
     setTotalQuestions,
     setValues,
     increaseAnswered,
