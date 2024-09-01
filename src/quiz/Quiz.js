@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import Question from "./Question";
+import Question, { QuestionSkeleton } from "./Question";
 import axios from "axios";
 import { valuesContext } from "../App";
+import { Button } from "@nextui-org/button";
+import { Home, Search } from "../icons";
 
 const insertRandom = (arr, itm) => {
   const index = Math.floor(Math.random() * (arr.length + 1));
@@ -10,22 +12,29 @@ const insertRandom = (arr, itm) => {
 
 function Quiz() {
   const {
-    values: { no, catagory, type, difficulty, playing, firstGame, score },
+    values: { catagory, type, difficulty, stage, total_questions, score },
+    setValues,
   } = useContext(valuesContext);
-  const base_url = "https://opentdb.com/api.php?";
-  var url = `${base_url}amount=${no ? no : 10}${
-    catagory ? `&catagoty=${catagory}` : ""
-  }${difficulty ? `&difficulty=${difficulty}` : ""}${
-    type ? `&type=${type}` : ""
-  }`;
+
+  const review = () => {
+    setValues((prev) => ({
+      ...prev,
+      stage: stage === "score" ? "home" : "score",
+    }));
+  };
 
   const [data, setData] = useState({ results: [] });
   useEffect(() => {
+    const base_url = "https://opentdb.com/api.php?";
+    var url = `${base_url}amount=${total_questions ? total_questions : 10}${
+      catagory ? `&catagoty=${catagory}` : ""
+    }${difficulty ? `&difficulty=${difficulty}` : ""}${
+      type ? `&type=${type}` : ""
+    }`;
     const getData = async () => {
       try {
         const response = await axios(url);
         const text = await response.data;
-        console.log(text);
         for (let i = 0; i < text.results.length; i++) {
           const all_answers = [...text.results[i].incorrect_answers];
           insertRandom(all_answers, text.results[i].correct_answer);
@@ -37,14 +46,39 @@ function Quiz() {
       }
     };
     getData();
-  }, [url]);
+  }, [catagory, difficulty, total_questions, type]);
 
   return (
-    <div className=" px-2 sm:px-5">
-      <div className="text-2xl py-3 font-bold">Score : {score} </div>
-      {data.results.map((question, i) => {
-        return <Question key={i} i={i + 1} question={question} />;
-      })}
+    <div className="px-2 sm:px-5 flex flex-col items-center">
+      {data.results.length === 0
+        ? [...Array(total_questions)].map((_, i) => (
+            <QuestionSkeleton key={i} />
+          ))
+        : data.results.map((question, i) => {
+            return <Question key={i} i={i + 1} question={question} />;
+          })}
+      <Button
+        onClick={review}
+        color="warning"
+        size="lg"
+        className="text-2xl items-center font-semibold">
+        {stage === "quiz" ? (
+          <>
+            <Search />
+            Review
+          </>
+        ) : (
+          <>
+            <Home /> Home
+          </>
+        )}
+      </Button>
+
+      {stage === "score" && (
+        <div className="text-3xl mt-5 font-semibold">
+          Total Score: {score} / {total_questions}{" "}
+        </div>
+      )}
     </div>
   );
 }

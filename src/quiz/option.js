@@ -1,45 +1,67 @@
-import React, { useContext, useState } from "react";
-import { enabledContext } from "./Question";
+import React, { useContext, useEffect, useState } from "react";
+import { decode } from "html-entities";
+import { Radio, RadioGroup } from "@nextui-org/radio";
 import { valuesContext } from "../App";
 
-function Option({ option, correct_answer }) {
-  const [color, setColor] = useState("bg-purple-300");
-  const { enabled, disable } = useContext(enabledContext);
+export function Options({ all_options, correct_answer }) {
+  const [selected, setSelected] = useState();
   const {
     increaseSocre,
-    values: { firstGame, no, total_questions },
-    setTotalQuestions,
-    setValues,
-    increaseAnswered,
+    values: { stage },
   } = useContext(valuesContext);
-  const checkAnswer = () => {
-    if (enabled) {
-      increaseAnswered();
-      if (firstGame === true) {
-        setValues((prev) => ({ ...prev, firstGame: false }));
-      }
-      if (no !== total_questions) {
-        setTotalQuestions();
-      }
-      if (option === correct_answer) {
-        setColor("bg-green-400");
-        increaseSocre();
-      } else {
-        setColor("bg-red-400");
-      }
-      disable();
+  const showAns = stage === "score";
+
+  useEffect(() => {
+    if (selected === correct_answer && showAns) {
+      increaseSocre();
     }
-  };
+  }, [selected, stage, correct_answer, showAns, increaseSocre]);
 
   return (
-    <div
-      onClick={checkAnswer}
-      className={`px-2 md:px-5 col-span-2 md:col-span-1 text-2xl transition-colors ease-in duration-50 ${
-        enabled ? "hover:bg-purple-500" : ""
-      } cursor-pointer py-2 ${color} m-3`}>
-      {option}
-    </div>
+    <RadioGroup
+      color="warning"
+      value={selected}
+      isDisabled={showAns}
+      onValueChange={setSelected}
+      classNames={{
+        wrapper: "grid grid-cols-1 md:grid-cols-2 p-2",
+      }}
+      //
+    >
+      {all_options.map((option) => (
+        <RadioOptions
+          key={option}
+          option={option}
+          correct_answer={correct_answer}
+          showAns={showAns}
+        />
+      ))}
+    </RadioGroup>
   );
 }
 
-export default Option;
+function RadioOptions({ option, correct_answer, showAns = false }) {
+  const correct = correct_answer === option;
+
+  return (
+    <Radio
+      classNames={{
+        label: "text-lg md:text-xl",
+        base: [
+          "w-10/12 mx-5 my-2 max-w-full rounded-lg gap-3",
+          "border-default border-2 data-[selected=true]:border-warning",
+          {
+            "border-success bg-success-300 bg-opacity-10": correct && showAns,
+            "data-[selected=true]:border-danger data-[selected=true]:bg-danger-300 data-[selected=true]:bg-opacity-20":
+              !correct && showAns,
+            "data-[selected=true]:border-success data-[selected=true]:bg-success-300 data-[selected=true]:bg-opacity-20":
+              correct && showAns,
+          },
+        ],
+      }}
+      key={option}
+      value={option}>
+      {decode(option)}
+    </Radio>
+  );
+}

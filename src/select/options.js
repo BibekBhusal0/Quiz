@@ -1,20 +1,24 @@
+import { Select, SelectItem } from "@nextui-org/select";
 import React from "react";
 
-function Options({ opt, label, onChange }) {
+function Options({ opt, label, onChange, selected }) {
   return (
-    <div className="text-lg col-span-4 sm:col-span-2 xl:col-span-1">
-      <label className=" capitalize pr-4" htmlFor={label}>
-        {label}
-      </label>
-      <select onChange={onChange} name={label}>
-        <option value={undefined}>Any</option>
-        {opt.map((item) => (
-          <option key={item.id} value={item.id}>
-            {item.name}
-          </option>
-        ))}
-      </select>
-    </div>
+    <Select
+      labelPlacement="outside-left"
+      className="items-center"
+      classNames={{
+        label: "text-xl capitalize",
+      }}
+      variant="bordered"
+      selectedKeys={[selected ? selected : "any"]}
+      label={label}
+      onChange={onChange}
+      name={label}>
+      <SelectItem key={"any"}>Any</SelectItem>
+      {opt.map((item) => (
+        <SelectItem key={item.id}>{item.name}</SelectItem>
+      ))}
+    </Select>
   );
 }
 
