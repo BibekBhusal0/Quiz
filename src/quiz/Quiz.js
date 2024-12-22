@@ -61,22 +61,14 @@ function Quiz() {
         onClick={review}
         color="warning"
         size="lg"
-        className="text-2xl items-center font-semibold">
-        {stage === "quiz" ? (
-          <>
-            <Search />
-            Review
-          </>
-        ) : (
-          <>
-            <Home /> Home
-          </>
-        )}
-      </Button>
+        className="text-2xl items-center font-semibold"
+        startContent={stage === "quiz" ? <Search /> : <Home />}
+        children={stage === "quiz" ? "Review" : "Home"}
+      />
 
       {stage === "score" && (
         <div className="text-3xl mt-5 font-semibold">
-          Total Score: {score} / {total_questions}{" "}
+          Total Score: {score} / {total_questions}
         </div>
       )}
     </div>

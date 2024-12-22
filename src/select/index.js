@@ -77,15 +77,13 @@ function Home() {
           label={"type"}
           opt={types}
         />
-        {catagories.trivia_categories ? (
+        {catagories.trivia_categories && (
           <Options
             onChange={handleChange}
             label={"catagory"}
             selected={catagory}
             opt={noEntertainment(catagories.trivia_categories)}
           />
-        ) : (
-          ""
         )}
       </div>
       <div className="text-center  my-10">

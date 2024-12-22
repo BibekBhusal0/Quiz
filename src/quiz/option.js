@@ -5,6 +5,7 @@ import { valuesContext } from "../App";
 
 export function Options({ all_options, correct_answer }) {
   const [selected, setSelected] = useState();
+  const [incresed, setIncresed] = useState(false);
   const {
     increaseSocre,
     values: { stage },
@@ -12,10 +13,11 @@ export function Options({ all_options, correct_answer }) {
   const showAns = stage === "score";
 
   useEffect(() => {
-    if (selected === correct_answer && showAns) {
+    if (selected === correct_answer && showAns && !incresed) {
       increaseSocre();
+      setIncresed(true);
     }
-  }, [selected, stage, correct_answer, showAns, increaseSocre]);
+  }, [selected, stage, correct_answer, showAns, increaseSocre, incresed]);
 
   return (
     <RadioGroup
